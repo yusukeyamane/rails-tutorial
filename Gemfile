@@ -6,6 +6,7 @@ gem 'bcrypt',         '3.1.11'
 gem 'faker', '1.7.3'
 gem 'will_paginate', '3.1.6'
 gem 'bootstrap-will_paginate'
+gem 'pry-rails'
 
 gem 'puma',         '3.9.1'
 gem 'sass-rails',   '5.0.6'
