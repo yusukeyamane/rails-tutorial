@@ -8,6 +8,8 @@ class User < ApplicationRecord
                                   dependent: :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers , through: :passive_relationships, source: :follower
+
+  scope :reply_to, ->(user_name) { find_by(user_name: user_name) }
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
@@ -72,7 +74,8 @@ class User < ApplicationRecord
   def feed
     following_ids = "SELECT followed_id FROM relationships
                      WHERE follower_id = :user_id"
-    Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
+
+    Micropost.includes(:user).where("in_reply_to = :user_name AND user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id, user_name: user_name)
   end
 
   def follow(other_user)

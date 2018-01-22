@@ -2,6 +2,9 @@
   <%= render('shared/error_messages', object: f.object) %>
   <div class="field">
     <%= f.text_area :content, placeholder: "compose new micro" %>
+    <% if @destination %>
+      <%= f.hidden_field :in_reply_to, value: "#{ @destination.user_name }" %>
+    <% end %>
   </div>
   <%= f.submit "Post", clas: "btn btn-primary" %>
 <% end %>
